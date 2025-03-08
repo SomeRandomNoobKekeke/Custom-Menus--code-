@@ -9,8 +9,9 @@ using Barotrauma;
 using Microsoft.Xna.Framework;
 using HarmonyLib;
 using Barotrauma.ClientSource.Settings;
+using CrabUI;
 
-namespace RadialMenus
+namespace CustomMenus
 {
   public partial class Mod
   {
@@ -25,18 +26,18 @@ namespace RadialMenus
       AddedCommands.Add(new DebugConsole.Command("togglemenu", "", (string[] args) =>
       {
         if (args.Length < 1) return;
-        if (Menus.ContainsKey(args[0]))
+        if (CUIMenu.Menus.ContainsKey(args[0]))
         {
-          Menus[args[0]].Toggle();
+          CUIMenu.Menus[args[0]].Toggle();
         }
       }));
 
       AddedCommands.Add(new DebugConsole.Command("openmenu", "", (string[] args) =>
       {
         if (args.Length < 1) return;
-        if (Menus.ContainsKey(args[0]))
+        if (CUIMenu.Menus.ContainsKey(args[0]))
         {
-          Menus[args[0]].Open();
+          CUIMenu.Menus[args[0]].Open();
         }
       }));
 
@@ -59,7 +60,7 @@ namespace RadialMenus
       {
         foreach (var (keyOrMouse, value) in DebugConsoleMapping.Instance.Bindings)
         {
-          Mod.Log($"{keyOrMouse} -> {value}");
+          Mod.Log($"{keyOrMouse} - {value}");
         }
       }));
 

@@ -9,18 +9,14 @@ using Barotrauma;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 
-namespace RadialMenus
+namespace CustomMenus
 {
   public class ModPaths
   {
     private string modName; public string ModName
     {
       get => modName;
-      set
-      {
-        modName = value;
-        FindModDir();
-      }
+      set { modName = value; FindModDir(); }
     }
     private string modDir = "";
     public string ModDir
@@ -30,17 +26,15 @@ namespace RadialMenus
       {
         modDir = value;
         AssetsFolder = Path.Combine(ModDir, "Assets");
-        Data = Path.Combine(ModDir, "Data");
-        DataUI = Path.Combine(Data, "UI");
+        MenusFolder = Path.Combine(ModDir, "Menus");
+        SettingsFolder = $"ModSettings/{ModName}";
         IsInLocalMods = modDir.Contains("LocalMods");
       }
     }
     public string AssetsFolder { get; set; }
-    public string Data { get; set; }
-    public string DataUI { get; set; }
+    public string MenusFolder { get; set; }
+    public string SettingsFolder { get; set; }
     public bool IsInLocalMods { get; set; }
-
-    public override string ToString() => $"ModDir: {ModDir}\nAssetsFolder: {AssetsFolder}\nData: {Data}\nDataUI: {DataUI}\nIsInLocalMods: {IsInLocalMods}";
 
     public void FindModDir()
     {
@@ -49,10 +43,20 @@ namespace RadialMenus
       );
 
       if (package != null) ModDir = Path.GetFullPath(package.Dir);
+      else Mod.Log($"Couldn't find mod folder for {ModName}, are you sure it matches name in the filelist?", Color.Orange);
     }
 
-    public ModPaths() { }
-    public ModPaths(string modName) => ModName = modName;
+
+    public void CreateModSettings()
+    {
+      if (!Directory.Exists(SettingsFolder)) Directory.CreateDirectory(SettingsFolder);
+    }
+
+    public ModPaths(string modName)
+    {
+      ModName = modName;
+      CreateModSettings();
+    }
 
   }
 

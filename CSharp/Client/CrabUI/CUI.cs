@@ -232,6 +232,8 @@ namespace CrabUI
 
     //HACK Why it's set to run in static constructor?
     // it runs perfectly fine in CUI.Initialize
+    //TODO component inits doesn't depend on the order
+    // why am i responsible for initing them here?
     internal static void InitStatic()
     {
       CUIExtensions.InitStatic();
@@ -241,6 +243,7 @@ namespace CrabUI
       CUIMultiModResolver.InitStatic();
       CUIPalette.InitStatic();
       CUIMap.CUIMapLink.InitStatic();
+      CUIMenu.InitStatic();
       CUIComponent.InitStatic();
       CUITypeMetaData.InitStatic();
       CUIStyleLoader.InitStatic();

@@ -13,16 +13,14 @@ using Microsoft.Xna.Framework.Input;
 using CrabUI;
 
 
-namespace RadialMenus
+namespace CustomMenus
 {
   public partial class Mod : IAssemblyPlugin
   {
-    public static string Name = "Radial Menus";
+    public static string Name = "Custom Menus";
 
     public static Mod Instance { get; set; }
     public ModPaths Paths { get; set; }
-
-    public Dictionary<string, CUIMenu> Menus = new();
 
     public void Initialize()
     {
@@ -36,37 +34,51 @@ namespace RadialMenus
       CUI.AssetsPath = Paths.AssetsFolder;
       CUI.Initialize();
 
-      Menus["1"] = new CUIMenu()
+
+      foreach (string file in Directory.GetFiles(Paths.MenusFolder, "*.xml", SearchOption.AllDirectories))
       {
-        ResizeToSprite = true,
-        BackgroundColor = new Color(0, 0, 0, 0),
-        BackgroundSprite = new CUISprite("Menu/Menu.png"),
-        Name = "Example",
-        // Relative = new CUINullRect(h: 0.8f),
-        // CrossRelative = new CUINullRect(w: 0.8f),
-      };
+        CUIMenu.Load(file);
+      }
 
-      Menus["1"]["lol"] = new CUIMenuOption()
+      foreach (string file in Directory.GetFiles(Paths.SettingsFolder, "*.xml", SearchOption.AllDirectories))
       {
-        BackgroundSprite = new CUISprite("Menu/1.png"),
-        HoverColor = new Color(0, 255, 255, 255),
-        Value = "spawnitem \"Riot Shotgun\" inventory",
-      };
+        CUIMenu.Load(file);
+      }
 
-      Menus["1"]["kek"] = new CUIMenuOption()
+      foreach (CUIMenu menu in CUIMenu.Menus.Values)
       {
-        BackgroundSprite = new CUISprite("Menu/2.png"),
-        HoverColor = new Color(0, 255, 255, 255),
-        Value = "spawnitem \"Shotgun Shell\" inventory 32",
-      };
+        menu.OnSelect += (s) => DebugConsole.ExecuteCommand(s);
+      }
+    }
 
+    public void CreateMenu()
+    {
+      // Menus["1"] = new CUIMenu()
+      // {
+      //   ResizeToSprite = true,
+      //   BackgroundColor = new Color(0, 0, 0, 0),
+      //   BackgroundSprite = new CUISprite("Menu/Menu.png"),
+      //   Name = "Example",
+      //   // Relative = new CUINullRect(h: 0.8f),
+      //   // CrossRelative = new CUINullRect(w: 0.8f),
+      // };
 
+      // Menus["1"]["lol"] = new CUIMenuOption()
+      // {
+      //   BackgroundSprite = new CUISprite("Menu/1.png"),
+      //   HoverColor = new Color(0, 255, 255, 255),
+      //   Value = "spawnitem \"Riot Shotgun\" inventory",
+      // };
 
-      Menus["1"].Open();
+      // Menus["1"]["kek"] = new CUIMenuOption()
+      // {
+      //   BackgroundSprite = new CUISprite("Menu/2.png"),
+      //   HoverColor = new Color(0, 255, 255, 255),
+      //   Value = "spawnitem \"Shotgun Shell\" inventory 32",
+      // };
 
-      Menus["1"].SaveToFile(Path.Combine(Paths.ModDir, "test.xml"));
-      Menus["1"] = CUIComponent.LoadFromFile<CUIMenu>(Path.Combine(Paths.ModDir, "test.xml"));
-      Menus["1"].OnSelect += (s) => DebugConsole.ExecuteCommand(s);
+      //Menus["1"].SaveToFile(Path.Combine(Paths.ModDir, "test.xml"));
+      //Menus["1"] = CUIComponent.LoadFromFile<CUIMenu>(Path.Combine(Paths.ModDir, "test.xml"));
     }
 
 

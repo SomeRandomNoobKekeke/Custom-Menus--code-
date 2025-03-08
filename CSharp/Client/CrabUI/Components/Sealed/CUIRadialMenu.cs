@@ -137,7 +137,7 @@ namespace CrabUI
       Relative = new CUINullRect(h: 0.8f);
       CrossRelative = new CUINullRect(w: 0.8f);
       BackgroundColor = new Color(255, 255, 255, 255);
-      BackgroundSprite = new CUISprite("RadialMenu.png");
+      //BackgroundSprite = new CUISprite("RadialMenu.png");
 
       Animations["fade"] = new CUIAnimation()
       {

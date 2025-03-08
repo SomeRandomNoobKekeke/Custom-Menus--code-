@@ -88,6 +88,19 @@ namespace CrabUI
     public bool Selected { get; set; }
     // ----------------- IKeyboardSubscriber -----------------
 
+    public static void InitStatic() => CUI.OnDispose += () => Menus.Clear();
+    public static Dictionary<string, CUIMenu> Menus = new();
+
+
+
+    [CUISerializable]
+    public double FadeInDuration
+    {
+      get => Animations["fade"].Duration;
+      set => Animations["fade"].Duration = value;
+    }
+
+    [CUISerializable] public string Name { get; set; }
     //idk
     [CUISerializable] public bool BlockInput { get; set; }
 
@@ -112,14 +125,14 @@ namespace CrabUI
       else Open(host);
     }
 
-    [CUISerializable]
-    public double FadeInDuration
+    public static CUIMenu Load(string path)
     {
-      get => Animations["fade"].Duration;
-      set => Animations["fade"].Duration = value;
+      CUIMenu menu = CUIComponent.LoadFromFile<CUIMenu>(path);
+      if (menu == null) CUI.Warning($"Couldn't load CUIMenu from {path}");
+      if (menu?.Name != null) Menus[menu.Name] = menu;
+      return menu;
     }
 
-    [CUISerializable] public string Name { get; set; }
 
     public CUIMenu() : base()
     {
