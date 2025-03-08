@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CUIMenu Absolute="[,,512,512]" BackgroundSprite="{ Path: Menu/Menu.png }" Name="Example" ResizeToSprite="true">
+  <CUIMenuOption AKA="lol" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: Menu/1.png }" HoverColor="0,255,255,255" Value="spawnitem &quot;Riot Shotgun&quot; inventory" />
+  <CUIMenuOption AKA="kek" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: Menu/2.png }" HoverColor="0,255,255,255" Value="spawnitem &quot;Shotgun Shell&quot; inventory 32" />
+  <CUIMenuText Text="guh" TextColor="0,0,0,255" TextScale="2" />
+</CUIMenu>
