@@ -7,7 +7,7 @@ using Barotrauma;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
-
+using System.IO;
 namespace CrabUI
 {
   public enum CUISpriteDrawMode
@@ -174,6 +174,40 @@ namespace CrabUI
         sprite.Effects = CUIExtensions.ParseSpriteEffects(props["effects"]);
       }
 
+      return sprite;
+    }
+
+    //TODO find less hacky solution
+    public static CUISprite ParseWithContext(string raw, string baseFolder = null)
+    {
+      Dictionary<string, string> props = CUIExtensions.ParseKVPairs(raw);
+
+      if (!props.ContainsKey("path")) return new CUISprite();
+
+      if (!System.IO.Path.IsPathRooted(props["path"]) && baseFolder != null)
+      {
+        string localPath = System.IO.Path.Combine(baseFolder, props["path"]);
+
+        if (File.Exists(localPath)) props["path"] = localPath;
+      }
+
+      CUISprite sprite = CUI.TextureManager.GetSprite(props["path"]);
+      if (props.ContainsKey("mode"))
+      {
+        sprite.DrawMode = Enum.Parse<CUISpriteDrawMode>(props["mode"]);
+      }
+      if (props.ContainsKey("sourcerect"))
+      {
+        sprite.SourceRect = CUIExtensions.ParseRectangle(props["sourcerect"]);
+      }
+      else
+      {
+        sprite.SourceRect = new Rectangle(0, 0, sprite.Texture.Width, sprite.Texture.Height);
+      }
+      if (props.ContainsKey("effects"))
+      {
+        sprite.Effects = CUIExtensions.ParseSpriteEffects(props["effects"]);
+      }
 
       return sprite;
     }

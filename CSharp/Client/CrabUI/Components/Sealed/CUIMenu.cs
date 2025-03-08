@@ -11,6 +11,7 @@ using System.Windows;
 
 namespace CrabUI
 {
+  //TODO move all this to defauld styles
   public class CUIMenuText : CUITextBlock
   {
     public CUIMenuText(string text) : this() => Text = text;
@@ -101,6 +102,7 @@ namespace CrabUI
     }
 
     [CUISerializable] public string Name { get; set; }
+    [CUISerializable] public string Author { get; set; }
     //idk
     [CUISerializable] public bool BlockInput { get; set; }
 

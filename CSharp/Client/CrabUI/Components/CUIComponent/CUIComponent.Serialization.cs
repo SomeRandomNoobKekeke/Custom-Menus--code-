@@ -170,7 +170,7 @@ namespace CrabUI
     }
 
 
-    public virtual void FromXML(XElement element)
+    public virtual void FromXML(XElement element, string baseFolder = null)
     {
       foreach (XElement childElement in element.Elements())
       {
@@ -178,16 +178,16 @@ namespace CrabUI
         if (childType == null) continue;
 
         CUIComponent child = (CUIComponent)Activator.CreateInstance(childType);
-        child.FromXML(childElement);
+        child.FromXML(childElement, baseFolder);
 
         //CUI.Log($"{this}[{child.AKA}] = {child} ");
         this.Append(child, child.AKA);
       }
 
-      ExtractProps(element);
+      ExtractProps(element, baseFolder);
     }
 
-    protected void ExtractProps(XElement element)
+    protected void ExtractProps(XElement element, string baseFolder = null)
     {
       Type type = GetType();
 
@@ -216,6 +216,14 @@ namespace CrabUI
         );
 
 
+        Func<string, object> ParseWithContext = null;
+        //HACK
+        if (prop.PropertyType == typeof(CUISprite) && baseFolder != null)
+        {
+          ParseWithContext = (raw) => CUISprite.ParseWithContext(raw, baseFolder);
+        }
+
+
         if (parse == null)
         {
           if (prop.PropertyType.IsEnum)
@@ -238,7 +246,15 @@ namespace CrabUI
         {
           try
           {
-            object result = parse.Invoke(null, new object[] { attribute.Value });
+            object result = null;
+            if (ParseWithContext != null)
+            {
+              result = ParseWithContext(attribute.Value);
+            }
+            else
+            {
+              result = parse.Invoke(null, new object[] { attribute.Value });
+            }
             prop.SetValue(this, result);
           }
           catch (Exception e)
@@ -305,12 +321,12 @@ namespace CrabUI
         return e.Message;
       }
     }
-    public static CUIComponent Deserialize(string raw)
+    public static CUIComponent Deserialize(string raw, string baseFolder = null)
     {
       return Deserialize(XElement.Parse(raw));
     }
 
-    public static CUIComponent Deserialize(XElement e)
+    public static CUIComponent Deserialize(XElement e, string baseFolder = null)
     {
       try
       {
@@ -319,7 +335,7 @@ namespace CrabUI
 
         CUIComponent c = (CUIComponent)Activator.CreateInstance(type);
         // c.RemoveAllChildren();
-        c.FromXML(e);
+        c.FromXML(e, baseFolder);
         CUIComponent.RunRecursiveOn(c, (component) => component.Hydrate());
 
         return c;
@@ -331,14 +347,16 @@ namespace CrabUI
       }
     }
 
-    public void LoadSelfFromFile(string path, bool saveAfterLoad = false)
+    public void LoadSelfFromFile(string path, bool searchForSpritesInTheSameFolder = true, bool saveAfterLoad = false)
     {
       try
       {
         XDocument xdoc = XDocument.Load(path);
 
         RemoveAllChildren();
-        FromXML(xdoc.Root);
+        if (searchForSpritesInTheSameFolder) FromXML(xdoc.Root, Path.GetDirectoryName(path));
+        else FromXML(xdoc.Root);
+
         CUIComponent.RunRecursiveOn(this, (component) => component.Hydrate());
         SavePath = path;
 
@@ -350,12 +368,18 @@ namespace CrabUI
       }
     }
 
-    public static CUIComponent LoadFromFile(string path, bool saveAfterLoad = false)
+    public static CUIComponent LoadFromFile(string path, bool searchForSpritesInTheSameFolder = true, bool saveAfterLoad = false)
     {
       try
       {
         XDocument xdoc = XDocument.Load(path);
-        CUIComponent result = Deserialize(xdoc.Root);
+        CUIComponent result;
+        if (searchForSpritesInTheSameFolder)
+        {
+          result = Deserialize(xdoc.Root, Path.GetDirectoryName(path));
+        }
+        else result = Deserialize(xdoc.Root);
+
         result.SavePath = path;
 
         if (SaveAfterLoad && saveAfterLoad) result.SaveToTheSamePath();
@@ -369,12 +393,18 @@ namespace CrabUI
       }
     }
 
-    public static T LoadFromFile<T>(string path, bool saveAfterLoad = false) where T : CUIComponent
+    public static T LoadFromFile<T>(string path, bool searchForSpritesInTheSameFolder = true, bool saveAfterLoad = false) where T : CUIComponent
     {
       try
       {
         XDocument xdoc = XDocument.Load(path);
-        T result = (T)Deserialize(xdoc.Root);
+        T result;
+        if (searchForSpritesInTheSameFolder)
+        {
+          result = (T)Deserialize(xdoc.Root, Path.GetDirectoryName(path));
+        }
+        else result = (T)Deserialize(xdoc.Root);
+
         result.SavePath = path;
 
         if (SaveAfterLoad && saveAfterLoad) result.SaveToTheSamePath();
