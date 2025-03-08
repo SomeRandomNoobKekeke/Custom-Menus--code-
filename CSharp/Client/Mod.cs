@@ -21,19 +21,20 @@ namespace CustomMenus
 
     public static Mod Instance { get; set; }
     public ModPaths Paths { get; set; }
+    public Harmony harmony = new Harmony("CustomMenus");
 
     public void Initialize()
     {
       Instance = this;
       AddCommands();
+      PatchAll();
 
       Paths = new ModPaths(Name);
 
-
       CUI.ModDir = Paths.ModDir;
       CUI.AssetsPath = Paths.AssetsFolder;
+      CUI.UpdateHookIdentifier = Name;
       CUI.Initialize();
-
 
       foreach (string file in Directory.GetFiles(Paths.MenusFolder, "*.xml", SearchOption.AllDirectories))
       {
@@ -49,6 +50,14 @@ namespace CustomMenus
       {
         menu.OnSelect += (s) => DebugConsole.ExecuteCommand(s);
       }
+    }
+
+    public void PatchAll()
+    {
+      harmony.Patch(
+        original: typeof(LuaGame).GetMethod("IsCustomCommandPermitted"),
+        postfix: new HarmonyMethod(typeof(Mod).GetMethod("PermitCommands"))
+      );
     }
 
     public void CreateMenu()

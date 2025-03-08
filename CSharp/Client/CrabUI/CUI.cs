@@ -110,6 +110,10 @@ namespace CrabUI
     /// Will break the mod if it's compiled
     /// </summary>
     public static bool UseCursedPatches { get; set; } = false;
+    /// <summary>
+    /// It's important to set it, if 2 CUIs try to add a hook with same id one won't be added
+    /// </summary>
+    public static string UpdateHookIdentifier { get; set; } = "CUI";
     public static Harmony harmony = new Harmony("CrabUI");
     public static Random Random = new Random();
 

@@ -72,5 +72,10 @@ namespace CustomMenus
       AddedCommands.ForEach(c => DebugConsole.Commands.Remove(c));
       AddedCommands.Clear();
     }
+
+    public static void PermitCommands(Identifier command, ref bool __result)
+    {
+      if (Instance.AddedCommands.Any(c => c.Names.Contains(command.Value))) __result = true;
+    }
   }
 }
