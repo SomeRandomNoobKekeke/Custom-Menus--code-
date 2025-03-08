@@ -1,3 +1,5 @@
+if SERVER then return end
+
 require "CUITypes"
 
 local modFolder = ...
@@ -7,7 +9,7 @@ CUISprite.BaseFolder = menuFolder
 
 local  menu =  CUIMenu()
 menu.ResizeToSprite = true
-menu.Anchor = Vector2(1, 0.5)
+-- menu.Anchor = Vector2(1, 0.5)
 -- menu.Absolute = CUINullRect(nil, nil, 600, 100)
 -- menu.Relative = CUINullRect(nil, nil, nil, 0.2)
 -- menu.CrossRelative = CUINullRect(nil, nil, 0.2, nil)

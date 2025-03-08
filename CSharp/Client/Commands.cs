@@ -39,7 +39,7 @@ namespace CustomMenus
         {
           CUIMenu.Menus[args[0]].Toggle();
         }
-      }));
+      }, () => new string[][] { CUIMenu.Menus.Keys.ToArray() }));
 
       AddedCommands.Add(new DebugConsole.Command("openmenu", "", (string[] args) =>
       {
