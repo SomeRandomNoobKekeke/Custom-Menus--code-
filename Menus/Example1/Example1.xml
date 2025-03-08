@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CUIMenu Absolute="[,,512,512]" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: Background.png }" Name="Example1" ResizeToSprite="true">
+  <CUIMenuOption AKA="1" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: 1.png }" HoverColor="255,0,0,255" Value="spawnitem bikehorn inventory;speak honk!" />
+  <CUIMenuOption AKA="2" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: 2.png }" HoverColor="255,0,255,255" Value="spawnitem clownmask inventory" />
+  <CUIMenuOption AKA="3" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: 3.png }" HoverColor="0,255,255,255" Value="spawnitem clowncostume inventory" />
+  <CUIMenuOption AKA="4" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: 4.png }" HoverColor="255,255,0,255" Value="spawnitem Banana inventory" />
+</CUIMenu>

@@ -36,6 +36,9 @@ namespace CustomMenus
       CUI.UpdateHookIdentifier = Name;
       CUI.Initialize();
 
+
+      //CreateMenu();
+
       foreach (string file in Directory.GetFiles(Paths.MenusFolder, "*.xml", SearchOption.AllDirectories))
       {
         CUIMenu.Load(file);
@@ -48,7 +51,12 @@ namespace CustomMenus
 
       foreach (CUIMenu menu in CUIMenu.Menus.Values)
       {
-        menu.OnSelect += (s) => DebugConsole.ExecuteCommand(s);
+
+        menu.OnSelect += (s) =>
+        {
+          string[] commands = s.Split(';');
+          foreach (string c in commands) DebugConsole.ExecuteCommand(c);
+        };
       }
     }
 
@@ -62,32 +70,93 @@ namespace CustomMenus
 
     public void CreateMenu()
     {
-      // Menus["1"] = new CUIMenu()
-      // {
-      //   ResizeToSprite = true,
-      //   BackgroundColor = new Color(0, 0, 0, 0),
-      //   BackgroundSprite = new CUISprite("Menu/Menu.png"),
-      //   Name = "Example",
-      //   // Relative = new CUINullRect(h: 0.8f),
-      //   // CrossRelative = new CUINullRect(w: 0.8f),
-      // };
+      CUISprite.BaseFolder = Path.Combine(Paths.MenusFolder, "ReportEnemies");
+      CUIMenu menu = new CUIMenu()
+      {
+        ResizeToSprite = true,
+        BackgroundSprite = new CUISprite("Background.png"),
+        Name = "ReportEnemies",
+      };
 
-      // Menus["1"]["lol"] = new CUIMenuOption()
-      // {
-      //   BackgroundSprite = new CUISprite("Menu/1.png"),
-      //   HoverColor = new Color(0, 255, 255, 255),
-      //   Value = "spawnitem \"Riot Shotgun\" inventory",
-      // };
+      menu["crawler"] = new CUIMenuOption()
+      {
+        BackgroundSprite = new CUISprite("crawler.png"),
+        HoverColor = new Color(0, 255, 255, 255),
+        Value = "speak crawler!",
+      };
 
-      // Menus["1"]["kek"] = new CUIMenuOption()
-      // {
-      //   BackgroundSprite = new CUISprite("Menu/2.png"),
-      //   HoverColor = new Color(0, 255, 255, 255),
-      //   Value = "spawnitem \"Shotgun Shell\" inventory 32",
-      // };
+      menu["mudraptor"] = new CUIMenuOption()
+      {
+        BackgroundSprite = new CUISprite("mudraptor.png"),
+        HoverColor = new Color(0, 255, 255, 255),
+        Value = "speak mudraptor!",
+      };
+      menu["thresher"] = new CUIMenuOption()
+      {
+        BackgroundSprite = new CUISprite("thresher.png"),
+        HoverColor = new Color(0, 255, 255, 255),
+        Value = "speak thresher!",
+      };
+      menu["spineling"] = new CUIMenuOption()
+      {
+        BackgroundSprite = new CUISprite("spineling.png"),
+        HoverColor = new Color(0, 255, 255, 255),
+        Value = "speak spineling!",
+      };
 
-      //Menus["1"].SaveToFile(Path.Combine(Paths.ModDir, "test.xml"));
-      //Menus["1"] = CUIComponent.LoadFromFile<CUIMenu>(Path.Combine(Paths.ModDir, "test.xml"));
+      menu["moloch"] = new CUIMenuOption()
+      {
+        BackgroundSprite = new CUISprite("moloch.png"),
+        HoverColor = new Color(0, 255, 255, 255),
+        Value = "speak moloch!",
+      };
+      menu["hammerhead"] = new CUIMenuOption()
+      {
+        BackgroundSprite = new CUISprite("hammerhead.png"),
+        HoverColor = new Color(0, 255, 255, 255),
+        Value = "speak hammerhead!",
+      };
+      menu["husk"] = new CUIMenuOption()
+      {
+        BackgroundSprite = new CUISprite("husk.png"),
+        HoverColor = new Color(0, 255, 255, 255),
+        Value = "speak husk!",
+      };
+      menu["watcher"] = new CUIMenuOption()
+      {
+        BackgroundSprite = new CUISprite("watcher.png"),
+        HoverColor = new Color(0, 255, 255, 255),
+        Value = "speak watcher!",
+      };
+      menu["thalamus"] = new CUIMenuOption()
+      {
+        BackgroundSprite = new CUISprite("thalamus.png"),
+        HoverColor = new Color(255, 0, 0, 255),
+        Value = "speak thalamus!",
+      };
+      menu["charybdis"] = new CUIMenuOption()
+      {
+        BackgroundSprite = new CUISprite("charybdis.png"),
+        HoverColor = new Color(255, 0, 0, 255),
+        Value = "speak charybdis!",
+      };
+      menu["latcher"] = new CUIMenuOption()
+      {
+        BackgroundSprite = new CUISprite("latcher.png"),
+        HoverColor = new Color(255, 0, 0, 255),
+        Value = "speak latcher!",
+      };
+      menu["endworm"] = new CUIMenuOption()
+      {
+        BackgroundSprite = new CUISprite("endworm.png"),
+        HoverColor = new Color(255, 0, 0, 255),
+        Value = "speak endworm!",
+      };
+
+
+      CUISprite.BaseFolder = null;
+
+      menu.SaveToFile(Path.Combine(Paths.MenusFolder, "ReportEnemies/ReportEnemies.xml"));
     }
 
 

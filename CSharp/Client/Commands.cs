@@ -23,6 +23,15 @@ namespace CustomMenus
     {
       VanillaBindKey = DebugConsole.Commands.Find(c => c.Names.Contains("bindkey"));
 
+      AddedCommands.Add(new DebugConsole.Command("speak", "", (string[] args) =>
+      {
+        string msg = args.ElementAtOrDefault(0);
+        if (msg == null) return;
+
+        Character.Controlled.Speak(msg);
+        DebugConsole.ExecuteCommand($"say \"{msg}\"");
+      }));
+
       AddedCommands.Add(new DebugConsole.Command("togglemenu", "", (string[] args) =>
       {
         if (args.Length < 1) return;
@@ -39,7 +48,7 @@ namespace CustomMenus
         {
           CUIMenu.Menus[args[0]].Open();
         }
-      }));
+      }, () => new string[][] { CUIMenu.Menus.Keys.ToArray() }));
 
       AddedCommands.Add(new DebugConsole.Command("bindkey", "", (string[] args) =>
       {

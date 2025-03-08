@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CUIMenu Absolute="[,,512,512]" Anchor="[1,0.5]" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: Background.png }" Name="ReportEnemies" ResizeToSprite="true">
+  <CUIMenuOption AKA="crawler" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: crawler.png }" HoverColor="0,255,255,255" Value="speak crawler!" />
+  <CUIMenuOption AKA="mudraptor" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: mudraptor.png }" HoverColor="0,255,255,255" Value="speak mudraptor!" />
+  <CUIMenuOption AKA="thresher" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: thresher.png }" HoverColor="0,255,255,255" Value="speak thresher!" />
+  <CUIMenuOption AKA="spineling" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: spineling.png }" HoverColor="0,255,255,255" Value="speak spineling!" />
+  <CUIMenuOption AKA="moloch" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: moloch.png }" HoverColor="0,255,255,255" Value="speak moloch!" />
+  <CUIMenuOption AKA="hammerhead" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: hammerhead.png }" HoverColor="0,255,255,255" Value="speak hammerhead!" />
+  <CUIMenuOption AKA="husk" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: husk.png }" HoverColor="0,255,255,255" Value="speak husk!" />
+  <CUIMenuOption AKA="watcher" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: watcher.png }" HoverColor="0,255,255,255" Value="speak watcher!" />
+  <CUIMenuOption AKA="thalamus" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: thalamus.png }" HoverColor="255,0,0,255" Value="speak thalamus!" />
+  <CUIMenuOption AKA="charybdis" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: charybdis.png }" HoverColor="255,0,0,255" Value="speak charybdis!" />
+  <CUIMenuOption AKA="latcher" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: latcher.png }" HoverColor="255,0,0,255" Value="speak latcher!" />
+  <CUIMenuOption AKA="endworm" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: endworm.png }" HoverColor="255,0,0,255" Value="speak endworm!" />
+</CUIMenu>

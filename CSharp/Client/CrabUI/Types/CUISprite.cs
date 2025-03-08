@@ -109,15 +109,26 @@ namespace CrabUI
     }
 
 
+    public static string BaseFolder { get; set; }
+
     public CUISprite()
     {
       Texture = BackupTexture;
       SourceRect = new Rectangle(0, 0, Texture.Width, Texture.Height);
     }
-    public CUISprite(string path, Rectangle? sourceRect = null)
+    public CUISprite(string path, Rectangle? sourceRect = null, string baseFolder = null)
     {
+      baseFolder ??= BaseFolder;
+      string realpath = path;
+
+      if (!System.IO.Path.IsPathRooted(path) && baseFolder != null)
+      {
+        string localPath = System.IO.Path.Combine(baseFolder, path);
+        if (File.Exists(localPath)) realpath = localPath;
+      }
+
       Path = path;
-      Texture = CUI.TextureManager.GetTexture(path);
+      Texture = CUI.TextureManager.GetTexture(realpath);
       if (sourceRect.HasValue) SourceRect = sourceRect.Value;
     }
     public CUISprite(Texture2D texture, Rectangle? sourceRect = null)
