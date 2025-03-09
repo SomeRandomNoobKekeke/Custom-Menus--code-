@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CUIMenu Relative="[,,,0.8]" CrossRelative="[,,0.8,]" Anchor="[0.5,0.5]" BackgroundColor="255,255,255,0" Name="OClock">
+  <CUIMenuOption AKA="1" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: 1.png }" HoverColor="0,255,255,255" Value="speak &quot;1 o'clock&quot;" />
+  <CUIMenuOption AKA="2" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: 2.png }" HoverColor="0,255,255,255" Value="speak &quot;2 o'clock&quot;" />
+  <CUIMenuOption AKA="3" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: 3.png }" HoverColor="0,255,255,255" Value="speak &quot;3 o'clock&quot;" />
+  <CUIMenuOption AKA="4" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: 4.png }" HoverColor="0,255,255,255" Value="speak &quot;4 o'clock&quot;" />
+  <CUIMenuOption AKA="5" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: 5.png }" HoverColor="0,255,255,255" Value="speak &quot;5 o'clock&quot;" />
+  <CUIMenuOption AKA="6" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: 6.png }" HoverColor="0,255,255,255" Value="speak &quot;6 o'clock&quot;" />
+  <CUIMenuOption AKA="7" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: 7.png }" HoverColor="0,255,255,255" Value="speak &quot;7 o'clock&quot;" />
+  <CUIMenuOption AKA="8" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: 8.png }" HoverColor="0,255,255,255" Value="speak &quot;8 o'clock&quot;" />
+  <CUIMenuOption AKA="9" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: 9.png }" HoverColor="0,255,255,255" Value="speak &quot;9 o'clock&quot;" />
+  <CUIMenuOption AKA="10" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: 10.png }" HoverColor="0,255,255,255" Value="speak &quot;10 o'clock&quot;" />
+  <CUIMenuOption AKA="11" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: 11.png }" HoverColor="0,255,255,255" Value="speak &quot;11 o'clock&quot;" />
+  <CUIMenuOption AKA="12" BackgroundColor="255,255,255,255" BackgroundSprite="{ Path: 12.png }" HoverColor="0,255,255,255" Value="speak &quot;12 o'clock&quot;" />
+</CUIMenu>
