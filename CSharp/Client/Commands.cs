@@ -25,10 +25,10 @@ namespace CustomMenus
 
       AddedCommands.Add(new DebugConsole.Command("speak", "", (string[] args) =>
       {
-        string msg = args.ElementAtOrDefault(0);
-        if (msg == null) return;
+        string msg = string.Join(" ", args);
+        if (msg == null || msg == "") return;
 
-        Character.Controlled.Speak(msg);
+        Character.Controlled?.Speak(msg);
         DebugConsole.ExecuteCommand($"say \"{msg}\"");
       }));
 

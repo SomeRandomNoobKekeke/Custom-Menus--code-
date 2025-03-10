@@ -12,6 +12,9 @@ using System.Windows;
 namespace CrabUI
 {
   //TODO move all this to defauld styles
+  /// <summary>
+  /// CUITextBlock adapted for CUIMenu
+  /// </summary>
   public class CUIMenuText : CUITextBlock
   {
     public CUIMenuText(string text) : this() => Text = text;
@@ -22,14 +25,23 @@ namespace CrabUI
       ZIndex = 100;
       TextColor = Color.Black;
     }
-
   }
 
+
+  /// <summary>
+  /// Component with a sprite that will notify parent CUIMenu when clicked
+  /// </summary>
   public class CUIMenuOption : CUIComponent
   {
     public GUISoundType ClickSound { get; set; } = GUISoundType.Select;
+    /// <summary>
+    /// This is the Value that will be send to CUIMenu on click, and will be passed to OnSelect event
+    /// </summary>
     [CUISerializable] public string Value { get; set; }
 
+    /// <summary>
+    /// Normal background color
+    /// </summary>
     [CUISerializable]
     public Color BaseColor
     {
@@ -41,6 +53,9 @@ namespace CrabUI
       }
     }
 
+    /// <summary>
+    /// Background color when hovered
+    /// </summary>
     [CUISerializable]
     public Color HoverColor
     {
@@ -90,10 +105,15 @@ namespace CrabUI
     // ----------------- IKeyboardSubscriber -----------------
 
     public static void InitStatic() => CUI.OnDispose += () => Menus.Clear();
+    /// <summary>
+    /// All loaded menus are stored here by Name
+    /// </summary>
     public static Dictionary<string, CUIMenu> Menus = new();
 
 
-
+    /// <summary>
+    /// Initial fade in animation duration, set to 0 to disable
+    /// </summary>
     [CUISerializable]
     public double FadeInDuration
     {
@@ -101,12 +121,26 @@ namespace CrabUI
       set => Animations["fade"].Duration = value;
     }
 
+    /// <summary>
+    /// Will be used as key for this menu in CUIMenu.Menus
+    /// </summary>
     [CUISerializable] public string Name { get; set; }
+    /// <summary>
+    /// Does nothing, just a prop so you could get author programmatically
+    /// </summary>
     [CUISerializable] public string Author { get; set; }
-    //idk
-    [CUISerializable] public bool BlockInput { get; set; }
 
+    /// <summary>
+    /// If true will act as IKeyboardSubscriber. Don't
+    /// </summary>
+    [CUISerializable] public bool BlockInput { get; set; }
+    /// <summary>
+    /// Happens when some CUIMenuOption is clicked, the value of that option is passed to it
+    /// </summary>
     public event Action<string> OnSelect;
+    /// <summary>
+    /// Will add this as a child to host (CUI.Main) and start fadein animation
+    /// </summary>
     public void Open(CUIComponent host = null)
     {
       if (Parent != null) return;
@@ -127,6 +161,9 @@ namespace CrabUI
       else Open(host);
     }
 
+    /// <summary>
+    /// Loads CUIMenu from a file to CUIMenu.Menus
+    /// </summary>
     public static CUIMenu Load(string path)
     {
       CUIMenu menu = CUIComponent.LoadFromFile<CUIMenu>(path);
@@ -134,7 +171,6 @@ namespace CrabUI
       if (menu?.Name != null) Menus[menu.Name] = menu;
       return menu;
     }
-
 
     public CUIMenu() : base()
     {

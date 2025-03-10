@@ -19,18 +19,45 @@ namespace CrabUI
   }
 
   /// <summary>
-  /// Wrapper, containing link to texture, source rect, path, draw mode
+  /// Wrapper Containing link to texture and drawing settings,  
+  /// like SourceRedt, DrawMode, Effects, Rotation...  
+  /// Multiple sprites can use the same texture
   /// </summary>
   public class CUISprite : ICloneable
   {
+    /// <summary>
+    /// 1x1 white texture
+    /// </summary>
     public static Texture2D BackupTexture => GUI.WhiteTexture;
+    /// <summary>
+    /// new Sprite that uses 1x1 default texture 
+    /// </summary>
     public static CUISprite Default => new CUISprite();
 
+    /// <summary>
+    /// Set when you load it from some path
+    /// </summary>
     public string Path = "";
+    /// <summary>
+    /// None, FlipHorizontally, FlipVertically
+    /// </summary>
     public SpriteEffects Effects;
+    /// <summary>
+    /// Resize - will resize the sprite to component  
+    /// Wrap - will loop the texture  
+    /// Static - sprite ignores component position
+    /// </summary>
     public CUISpriteDrawMode DrawMode;
+    /// <summary>
+    /// Part of the texture that is drawn  
+    /// Won't work in Wrap mode becase it will loop the whole texture
+    /// </summary>
     public Rectangle SourceRect;
     private Texture2D texture = BackupTexture;
+    /// <summary>
+    /// The link to the texture  
+    /// Multiple sprites can use the same texture
+    /// </summary>
     public Texture2D Texture
     {
       get => texture;
@@ -40,16 +67,25 @@ namespace CrabUI
         SourceRect = new Rectangle(0, 0, texture.Width, texture.Height);
       }
     }
-
-
-
+    /// <summary>
+    /// In radians
+    /// </summary>
     public float Rotation;
+    /// <summary>
+    /// In degree
+    /// </summary>
     public float RotationAngle
     {
       get => (float)(Rotation * 180 / Math.PI);
       set => Rotation = (float)(value * Math.PI / 180);
     }
+    /// <summary>
+    /// Origin of rotation in pixels
+    /// </summary>
     public Vector2 Origin;
+    /// <summary>
+    /// Origin of rotation in [0..1] of texture size
+    /// </summary>
     public Vector2 RelativeOrigin
     {
       set
@@ -59,6 +95,10 @@ namespace CrabUI
       }
     }
     private Vector2 offset;
+    /// <summary>
+    /// Draw offset from CUIComponent Position  
+    /// For your convenience also sets origin
+    /// </summary>
     public Vector2 Offset
     {
       get => offset;
@@ -73,7 +113,6 @@ namespace CrabUI
     {
       if (obj is not CUISprite b) return false;
 
-
       return Texture == b.Texture &&
         SourceRect == b.SourceRect &&
         DrawMode == b.DrawMode &&
@@ -83,7 +122,9 @@ namespace CrabUI
         Offset == b.Offset;
     }
 
-
+    /// <summary>
+    /// Creates a CUISprite from vanilla Sprite
+    /// </summary>
     public static CUISprite FromVanilla(Sprite sprite)
     {
       if (sprite == null) return Default;
@@ -94,6 +135,9 @@ namespace CrabUI
       };
     }
 
+    /// <summary>
+    /// Uses vanilla GUI sprite from GUIStyle.ComponentStyles with this name
+    /// </summary>
     public static CUISprite FromName(string name) => FromId(new Identifier(name));
     public static CUISprite FromId(Identifier id)
     {
@@ -108,9 +152,17 @@ namespace CrabUI
       return FromVanilla(style.Sprites[state].FirstOrDefault()?.Sprite);
     }
 
-
+    //TODO add using construction
+    /// <summary>
+    /// When you load sprite from file, relative paths are considered relative to barotrauma folder  
+    /// if BaseFolder != null sprite will check files in BaseFolder first
+    /// Don't forget to set it back to null
+    /// </summary>
     public static string BaseFolder { get; set; }
 
+    /// <summary>
+    /// Default 1x1 white sprite
+    /// </summary>
     public CUISprite()
     {
       Texture = BackupTexture;
@@ -152,15 +204,20 @@ namespace CrabUI
       return sprite;
     }
 
-    //TODO serialize offset, rotation
     public override string ToString()
     {
       string mode = DrawMode != CUISpriteDrawMode.Resize ? $", Mode: {DrawMode}" : "";
       string rect = SourceRect != Texture.Bounds ? $", SourceRect: {CUIExtensions.RectangleToString(SourceRect)}" : "";
       string effect = Effects != SpriteEffects.None ? $", Effects: {CUIExtensions.SpriteEffectsToString(Effects)}" : "";
 
-      return $"{{ Path: {Path}{mode}{rect}{effect} }}";
+      string rotation = Rotation != 0.0f ? $", Rotation: {Rotation}" : "";
+      string offset = Offset != Vector2.Zero ? $", Offset: {CUIExtensions.Vector2ToString(Offset)}" : "";
+      string origin = Origin != Vector2.Zero ? $", Origin: {CUIExtensions.Vector2ToString(Origin)}" : "";
+
+      return $"{{ Path: {Path}{mode}{rect}{effect}{rotation}{offset}{origin} }}";
     }
+
+    //BUG it can't use absolute paths because of the c://
     public static CUISprite Parse(string raw)
     {
       Dictionary<string, string> props = CUIExtensions.ParseKVPairs(raw);
@@ -183,6 +240,23 @@ namespace CrabUI
       if (props.ContainsKey("effects"))
       {
         sprite.Effects = CUIExtensions.ParseSpriteEffects(props["effects"]);
+      }
+
+      if (props.ContainsKey("rotation"))
+      {
+        float r;
+        float.TryParse(props["rotation"], out r);
+        sprite.Rotation = r;
+      }
+
+      if (props.ContainsKey("offset"))
+      {
+        sprite.Offset = CUIExtensions.ParseVector2(props["offset"]);
+      }
+
+      if (props.ContainsKey("origin"))
+      {
+        sprite.Origin = CUIExtensions.ParseVector2(props["origin"]);
       }
 
       return sprite;
@@ -218,6 +292,23 @@ namespace CrabUI
       if (props.ContainsKey("effects"))
       {
         sprite.Effects = CUIExtensions.ParseSpriteEffects(props["effects"]);
+      }
+
+      if (props.ContainsKey("rotation"))
+      {
+        float r;
+        float.TryParse(props["rotation"], out r);
+        sprite.Rotation = r;
+      }
+
+      if (props.ContainsKey("offset"))
+      {
+        sprite.Offset = CUIExtensions.ParseVector2(props["offset"]);
+      }
+
+      if (props.ContainsKey("origin"))
+      {
+        sprite.Origin = CUIExtensions.ParseVector2(props["origin"]);
       }
 
       return sprite;

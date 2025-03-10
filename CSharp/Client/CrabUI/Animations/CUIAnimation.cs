@@ -10,6 +10,11 @@ using Microsoft.Xna.Framework;
 
 namespace CrabUI
 {
+  /// <summary>
+  /// WIP, can animate any property on any object
+  /// Can run back and forth in [0..1] interval and 
+  /// interpolate any property between StartValue and EndValue
+  /// </summary>
   public class CUIAnimation
   {
     internal static void InitStatic()
@@ -18,7 +23,10 @@ namespace CrabUI
     }
 
     public static HashSet<CUIAnimation> ActiveAnimations = new();
-    public static void UpdateAllAnimations(double time)
+    /// <summary>
+    /// This is called in CUIUpdate
+    /// </summary>
+    internal static void UpdateAllAnimations(double time)
     {
       foreach (CUIAnimation animation in ActiveAnimations)
       {
@@ -32,6 +40,9 @@ namespace CrabUI
 
 
     private object target;
+    /// <summary>
+    /// Object containing animated property
+    /// </summary>
     public object Target
     {
       get => target;
@@ -56,6 +67,9 @@ namespace CrabUI
       }
     }
 
+    /// <summary>
+    /// In seconds
+    /// </summary>
     public double Duration
     {
       get => 1.0 / Speed * Timing.Step;
@@ -76,19 +90,39 @@ namespace CrabUI
       }
     }
 
+    /// <summary>
+    /// Will prevent it from starting
+    /// </summary>
     public bool Blocked { get; set; }
+    /// <summary>
+    /// Progress of animation [0..1]
+    /// </summary>
     public double Lambda { get; set; }
+    /// <summary>
+    /// Lambda increase per update step, calculated when you set Duration
+    /// </summary>
     public double Speed { get; set; } = 0.01;
     public double? BackSpeed { get; set; }
+    /// <summary>
+    /// If true animation won't stop when reaching end, it will change direction
+    /// </summary>
     public bool Bounce { get; set; }
+    /// <summary>
+    /// Straight, Reverse
+    /// </summary>
     public CUIDirection Direction { get; set; }
-
+    /// <summary>
+    /// Value will be interpolated between these values 
+    /// </summary>
     public object StartValue { get; set; }
     public object EndValue { get; set; }
 
     private string property;
     private Action<object> setter;
     private Type propertyType;
+    /// <summary>
+    /// Property name that is animated
+    /// </summary>
     public string Property
     {
       get => property;
@@ -100,8 +134,20 @@ namespace CrabUI
     }
 
     public event Action<CUIDirection> OnStop;
-    public Func<float, object> Interpolate;
-
+    /// <summary>
+    /// You can set custon Interpolate function
+    /// </summary>
+    public Func<float, object> Interpolate
+    {
+      get => interpolate;
+      set
+      {
+        customInterpolate = value;
+        UpdateSetter();
+      }
+    }
+    private Func<float, object> customInterpolate;
+    private Func<float, object> interpolate;
     //...
     public Action<object> Convert<T>(Action<T> myActionT)
     {
@@ -123,7 +169,7 @@ namespace CrabUI
 
         propertyType = pi.PropertyType;
 
-        Interpolate = (l) => CUIInterpolate.Interpolate[propertyType].Invoke(StartValue, EndValue, l);
+        interpolate = customInterpolate ?? ((l) => CUIInterpolate.Interpolate[propertyType].Invoke(StartValue, EndValue, l));
 
 
         // https://coub.com/view/1mast0
@@ -140,29 +186,43 @@ namespace CrabUI
     }
 
 
-
+    /// <summary>
+    /// Resumes animation in the same direction
+    /// </summary>
     public void Start() => Active = true;
     public void Stop()
     {
       Active = false;
       OnStop?.Invoke(Direction);
     }
+    /// <summary>
+    /// Set Direction to Straight and Start
+    /// </summary>
     public void Forward()
     {
       Direction = CUIDirection.Straight;
       Active = true;
     }
+    /// <summary>
+    /// Set Direction to Reverse and Start
+    /// </summary>
     public void Back()
     {
       Direction = CUIDirection.Reverse;
       Active = true;
     }
 
+    /// <summary>
+    /// Set Lambda to 0
+    /// </summary>
     public void SetToStart() => Lambda = StartLambda;
+    /// <summary>
+    /// Set Lambda to 1
+    /// </summary>
     public void SetToEnd() => Lambda = EndLambda;
 
 
-    public void UpdateState()
+    private void UpdateState()
     {
       if (Direction == CUIDirection.Straight && Lambda >= EndLambda)
       {
@@ -181,8 +241,8 @@ namespace CrabUI
 
     public void ApplyValue()
     {
-      if (Interpolate == null) return;
-      object value = Interpolate.Invoke((float)Lambda);
+      if (interpolate == null) return;
+      object value = interpolate.Invoke((float)Lambda);
       setter?.Invoke(value);
     }
 

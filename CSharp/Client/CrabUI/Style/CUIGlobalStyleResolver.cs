@@ -67,6 +67,7 @@ namespace CrabUI
             node.Meta.DefaultStyle
           );
         });
+
         // Apply default styles
         CUIReflection.CUITypeTree[CUIType].RunRecursive((node) =>
         {

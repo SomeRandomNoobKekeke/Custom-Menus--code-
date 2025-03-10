@@ -10,6 +10,9 @@ using Microsoft.Xna.Framework;
 
 namespace CrabUI
 {
+  /// <summary>
+  /// Class containing a few interpolate functions for CUIAnimation
+  /// </summary>
   public class CUIInterpolate
   {
     public static object InterpolateColor(object start, object end, double lambda)
