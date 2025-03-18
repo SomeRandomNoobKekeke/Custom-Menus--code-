@@ -20,11 +20,15 @@ All the attributes are properties of those components
 #### CUIMenu:
 - Name - Without name you won't be able to open it
 - FadeInDuration - Duration of initial fadein animation in seconds
+- CloseOnClick - If true then menu will close on any click
 
 #### CUIMenuOption:
 - Value - The value which is send to CUIMenu on click, console command in this case
 - BaseColor - Normal sprite color
 - HoverColor - Color on mouse hover
+- Close - If true will force close menu even if it has CloseOnClick="false"
+- FadeInDuration - Duration of color change animation on hover in Straight direction
+- FadeOutDuration - Duration of color change animation on hover in Reverse direction
 
 #### Common:
 - BackgroundSprite - Sets background sprite, Path can be relative to xml folder or barotrauma folder, also CUIMenuOption detects clicks only on non transparent pixels of its sprite

@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CUIMenu Absolute="[,,100,300]" Anchor="[1,0.5]"  BackgroundSprite="{ Path: Background.png }" Name="Example2" CloseOnClick="false" FadeInDuration="0" >
+  <CUIMenuOption AKA="1"  BackgroundSprite="{ Path: 1.png }" BaseColor="255,255,255,0" HoverColor="255,255,255,255" FadeInDuration="0" FadeOutDuration="0" Value="" />
+  <CUIMenuOption AKA="2"  BackgroundSprite="{ Path: 2.png }" BaseColor="255,255,255,0" HoverColor="255,255,255,255" FadeInDuration="0" FadeOutDuration="0" Value="" />
+  <CUIMenuOption AKA="3"  BackgroundSprite="{ Path: 3.png }" BaseColor="255,255,255,0" HoverColor="255,255,255,255" FadeInDuration="0" FadeOutDuration="0" Value="" />
+  <CUIMenuOption AKA="close"  BackgroundSprite="{ Path: close.png }" BaseColor="255,0,0,0" HoverColor="255,0,0,255" FadeInDuration="0" FadeOutDuration="0" Value="" Close="true" />
+</CUIMenu>

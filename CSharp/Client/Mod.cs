@@ -52,10 +52,18 @@ namespace CustomMenus
       foreach (CUIMenu menu in CUIMenu.Menus.Values)
       {
 
-        menu.OnSelect += (s) =>
+        menu.OnSelect += (value) =>
         {
-          string[] commands = s.Split(';');
-          foreach (string c in commands) DebugConsole.ExecuteCommand(c);
+          if (value == null || value == "") return;
+          string[] calls = value.Split(';');
+          foreach (string call in calls)
+          {
+            string command = call.Split(" ").ElementAtOrDefault(0) ?? "";
+            command = command.Trim();
+            if (command == "") continue;
+            if (!DebugConsole.Commands.Any(c => c.Names.Contains(command))) continue;
+            DebugConsole.ExecuteCommand(call);
+          }
         };
       }
     }

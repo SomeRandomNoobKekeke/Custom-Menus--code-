@@ -75,18 +75,22 @@ namespace CrabUI
       get => 1.0 / Speed * Timing.Step;
       set
       {
+        duration = value;
         double steps = value / Timing.Step;
-        Speed = 1.0 / steps;
+        Speed = steps == 0 ? 0 : 1.0 / steps;
       }
     }
+    private double duration;
+    private double reverseDuration;
 
     public double ReverseDuration
     {
       get => 1.0 / (BackSpeed ?? 0) * Timing.Step;
       set
       {
+        reverseDuration = value;
         double steps = value / Timing.Step;
-        BackSpeed = 1.0 / steps;
+        BackSpeed = steps == 0 ? 0 : 1.0 / steps;
       }
     }
 
@@ -244,14 +248,23 @@ namespace CrabUI
       if (interpolate == null) return;
       object value = interpolate.Invoke((float)Lambda);
       setter?.Invoke(value);
+      if (true) CUI.Log($"Animation ApplyValue [{value}]");
     }
 
     public void Step(double time)
     {
       UpdateState();
       ApplyValue();
-      Lambda += Direction == CUIDirection.Straight ? Speed : -(BackSpeed ?? Speed);
-      if (Debug) LogStatus();
+      if (duration == 0)
+      {
+        Lambda = Direction == CUIDirection.Straight ? EndLambda : StartLambda;
+      }
+      else
+      {
+        Lambda += Direction == CUIDirection.Straight ? Speed : -(BackSpeed ?? Speed);
+      }
+
+      if (true) LogStatus();
     }
 
     public void LogStatus() => CUI.Log($"Active:{Active} Direction:{Direction} Lambda:{Lambda}");

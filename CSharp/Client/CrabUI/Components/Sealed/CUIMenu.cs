@@ -11,10 +11,6 @@ using System.Windows;
 
 namespace CrabUI
 {
-  //TODO move all this to defauld styles
-  /// <summary>
-  /// CUITextBlock adapted for CUIMenu
-  /// </summary>
   public class CUIMenuText : CUITextBlock
   {
     public CUIMenuText(string text) : this() => Text = text;
@@ -38,6 +34,10 @@ namespace CrabUI
     /// This is the Value that will be send to CUIMenu on click, and will be passed to OnSelect event
     /// </summary>
     [CUISerializable] public string Value { get; set; }
+    /// <summary>
+    /// If true will always close menu event if menu.CloseOnClick == false
+    /// </summary>
+    [CUISerializable] public bool Close { get; set; }
 
     /// <summary>
     /// Normal background color
@@ -63,6 +63,25 @@ namespace CrabUI
       set => Animations["hover"].EndValue = value;
     }
 
+    /// <summary>
+    /// Duration of color change animation on hover in Straight direction
+    /// </summary>
+    [CUISerializable]
+    public double FadeInDuration
+    {
+      get => Animations["hover"].Duration;
+      set => Animations["hover"].Duration = value;
+    }
+    /// <summary>
+    /// Duration of color change animation on hover in Reverse direction
+    /// </summary>
+    [CUISerializable]
+    public double FadeOutDuration
+    {
+      get => Animations["hover"].ReverseDuration;
+      set => Animations["hover"].ReverseDuration = value;
+    }
+
 
     public CUIMenuOption()
     {
@@ -74,7 +93,8 @@ namespace CrabUI
       OnMouseDown += (e) =>
       {
         SoundPlayer.PlayUISound(ClickSound);
-        DispatchUp(new CUICommand(Command, Value));
+        DispatchUp(new CUICommand("CUIMenuOption select", Value));
+        if (Close) DispatchUp(new CUICommand("CUIMenuOption close", Value));
       };
 
       Animations["hover"] = new CUIAnimation()
@@ -120,6 +140,12 @@ namespace CrabUI
       get => Animations["fade"].Duration;
       set => Animations["fade"].Duration = value;
     }
+
+    /// <summary>
+    /// Should it be closed on click anywhere
+    /// </summary>
+    [CUISerializable]
+    public bool CloseOnClick { get; set; } = true;
 
     /// <summary>
     /// Will be used as key for this menu in CUIMenu.Menus
@@ -181,7 +207,11 @@ namespace CrabUI
       AddCommand("CUIMenuOption select", (o) =>
       {
         if (o is string s) OnSelect?.Invoke(s);
-        //Close();
+      });
+
+      AddCommand("CUIMenuOption close", (o) =>
+      {
+        Close();
       });
 
       Animations["fade"] = new CUIAnimation()
@@ -199,7 +229,10 @@ namespace CrabUI
           if (e.PressedKeys.Contains(Keys.Escape)) Close();
         };
 
-        CUI.Main.OnMouseDown += (e) => Close();
+        CUI.Main.OnMouseDown += (e) =>
+        {
+          if (CloseOnClick) Close();
+        };
       }
     }
 
