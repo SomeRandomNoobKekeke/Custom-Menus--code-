@@ -45,8 +45,8 @@ namespace CrabUI
     {
       color ??= Color.Cyan;
 
-      // var fi = new FileInfo(source);
-      // LuaCsLogger.LogMessage($"{fi.Directory.Name}/{fi.Name}:{lineNumber}", color * 0.6f, color * 0.6f);
+      var fi = new FileInfo(source);
+      LuaCsLogger.LogMessage($"{fi.Directory.Name}/{fi.Name}:{lineNumber}", color * 0.6f, color * 0.6f);
 
       LuaCsLogger.LogMessage($"{msg ?? "null"}", color * 0.8f, color);
     }

@@ -248,7 +248,6 @@ namespace CrabUI
       if (interpolate == null) return;
       object value = interpolate.Invoke((float)Lambda);
       setter?.Invoke(value);
-      if (true) CUI.Log($"Animation ApplyValue [{value}]");
     }
 
     public void Step(double time)
@@ -263,8 +262,6 @@ namespace CrabUI
       {
         Lambda += Direction == CUIDirection.Straight ? Speed : -(BackSpeed ?? Speed);
       }
-
-      if (true) LogStatus();
     }
 
     public void LogStatus() => CUI.Log($"Active:{Active} Direction:{Direction} Lambda:{Lambda}");

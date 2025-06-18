@@ -216,7 +216,7 @@ namespace CrabUI
       if (UserCount <= 0)
       {
         RemoveCommands();
-        harmony.UnpatchAll(harmony.Id);
+        harmony.UnpatchSelf();
         TextureManager.Dispose();
         CUIDebugEventComponent.CapturedIDs.Clear();
         OnDispose?.Invoke();
